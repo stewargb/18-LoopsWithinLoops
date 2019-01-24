@@ -3,15 +3,15 @@ This project demonstrates NESTED LOOPS (i.e., loops within loops)
 in the context of TWO-DIMENSIONAL GRAPHICS.
 
 Authors: David Mutchler, Valerie Galluzzi, Mark Hays, Amanda Stouder,
-         their colleagues and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         their colleagues and Grant Stewart.
+"""  # Done: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import rosegraphics as rg
 
 
 def main():
     """ Calls the other functions to demonstrate them. """
-    run_test_draw_L()
+    #run_test_draw_L()
     run_test_draw_wall_on_right()
 
 
@@ -79,8 +79,28 @@ def draw_L(window, circle, r, c):
       :type c: int
     and m and n are small, positive integers.
     """
+    x = circle.center.x
+    y = circle.center.y
+    distance = circle.radius
+
+    for k in range(r):
+        for j in range(3):
+            new_circle = rg.Circle(rg.Point(x+(j*(2*distance)),y+(k*(2*distance))),distance)
+            new_circle.fill_color=circle.fill_color
+            new_circle.attach_to(window)
+    new_circle = rg.Circle(rg.Point(x + ((0) * (2 * distance)), (y) + ((k+1) * (2 * distance))), distance)
+    x = new_circle.center.x
+    y = new_circle.center.y
+    distance = new_circle.radius
+    for s in range(c+3):
+        for g in range(3):
+            new_circle = rg.Circle(rg.Point(x + (s * (2 * distance)), y + (g * (2 * distance))), distance)
+            new_circle.fill_color = circle.fill_color
+            new_circle.attach_to(window)
+
+    window.render()
     # ------------------------------------------------------------------
-    # TODO: 2. Implement and test this function.
+    # Done: 2. Implement and test this function.
     #     The testing code is already written for you (above).
     # ------------------------------------------------------------------
 
@@ -120,8 +140,36 @@ def draw_wall_on_right(rectangle, n, window):
       :type window: rg.RoseWindow
     and n is a small, positive integer.
     """
+    topL = rectangle.get_upper_left_corner()
+    topLx=topL.x
+    topLy=topL.y
+    resettop=topLy
+    botR = rectangle.get_lower_right_corner()
+    botRx=botR.x
+    botRy=botR.y
+    resetbot=botRy
+    #rectangle.attach_to(window)
+    distancex=botRx-topLx
+    print('distancex',distancex)
+    distancey=botRy-topLy
+    print('distancey',distancey)
+
+    for k in range(n):
+        for j in range(n-k):
+            new=rg.Rectangle(rg.Point(topLx,topLy),rg.Point(botRx,botRy))
+            new.attach_to(window)
+            topLy = topLy + (distancey)
+            botRy = botRy + (distancey)
+            if j == (n-k-1):
+                topLy = resettop + distancey*(k+1)
+                botRy = resetbot + distancey*(k+1)
+        topLx = topLx - (distancex)
+        botRx = botRx - (distancex)
+    window.render()
+
+
     # ------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # Done: 3. Implement and test this function.
     #     The testing code is already written for you (above).
     # ------------------------------------------------------------------
 
